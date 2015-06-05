@@ -1,3 +1,4 @@
+Title: Customer Shopping Cart
 
 Narrative:
 As customer
@@ -10,7 +11,7 @@ Given a shopping cart
 When a customer adds an item to his shopping cart
 Then the shopping cart contains 1 different item
 
-Scenario: A Customer should add different items to his shopping cart
+Scenario: A customer should add different items to his shopping cart
 
 Given a shopping cart
 When the customer add 1 pen to his shopping cart with a price of 2 dollar (each)

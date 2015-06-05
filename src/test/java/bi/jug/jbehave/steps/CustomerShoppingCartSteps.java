@@ -12,6 +12,7 @@ import org.slf4j.LoggerFactory;
 
 import bi.jug.jbehave.cart.ShoppingCart;
 import bi.jug.jbehave.cart.ShoppingCartItem;
+import bi.jug.jbehave.customer.Customer;
 
 public class CustomerShoppingCartSteps {
 
@@ -20,8 +21,8 @@ public class CustomerShoppingCartSteps {
     private ShoppingCart cart;
 
     @Given( "a shopping cart" )
-    public void aCustomer() {
-        cart = new ShoppingCart();
+    public void aShoppingCart() {
+        cart = new ShoppingCart( Customer.newCustomer().build() );
     }
 
     @When( "a customer adds an item to his shopping cart" )
@@ -57,7 +58,8 @@ public class CustomerShoppingCartSteps {
 
     @Then( "the shopping cart total is $total dollar" )
     public void verifyCartItems( @Named( "total" ) BigDecimal total ) {
-        assertThat( cart.getTotal(), equalTo( total ) );
+        assertThat( String.format( "A cart total of %s is expected, but the cart has a total of %s", total, cart.getTotal() ),
+            cart.getTotal(), equalTo( total ) );
     }
 
 }

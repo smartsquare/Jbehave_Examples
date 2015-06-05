@@ -14,6 +14,7 @@ import org.slf4j.LoggerFactory;
 
 import bi.jug.jbehave.cart.ShoppingCart;
 import bi.jug.jbehave.cart.ShoppingCartItem;
+import bi.jug.jbehave.customer.Customer;
 
 public class RedeemPromotionCodeSteps {
 
@@ -25,7 +26,8 @@ public class RedeemPromotionCodeSteps {
 
     @Given( "a customers shopping cart" )
     public void aShoppingCart() {
-        cart = new ShoppingCart();
+
+        cart = new ShoppingCart( Customer.newCustomer().build() );
     }
 
     @Given( "the shopping cart contains one item" )
@@ -50,7 +52,9 @@ public class RedeemPromotionCodeSteps {
 
         BigDecimal discountedPrice = cart.getDiscountedPrice();
 
-        assertThat( discountedPrice, equalTo( total.subtract( discount ) ) );
+        assertThat(
+            String.format( "A cart total of %s is expected, but the cart total was %s", total.subtract( discount ), discountedPrice ),
+            discountedPrice, equalTo( total.subtract( discount ) ) );
     }
 
     @Then( "is the shopping cart total not reduced" )
@@ -60,7 +64,7 @@ public class RedeemPromotionCodeSteps {
 
         BigDecimal discountedPrice = cart.getDiscountedPrice();
 
-        assertThat( discountedPrice, equalTo( total ) );
+        assertThat( "The shopping cart total is reduced.", discountedPrice, equalTo( total ) );
     }
 
     @Then( "is the promo code rejected" )
@@ -70,7 +74,7 @@ public class RedeemPromotionCodeSteps {
 
         BigDecimal discountedPrice = cart.getDiscountedPrice();
 
-        assertThat( redeemResult, equalTo( Boolean.FALSE ) );
+        assertThat( "The promo was accepted and not rejected.", redeemResult, equalTo( Boolean.FALSE ) );
     }
 
 }

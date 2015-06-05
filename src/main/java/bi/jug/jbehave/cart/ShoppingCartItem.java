@@ -2,9 +2,13 @@ package bi.jug.jbehave.cart;
 
 import java.math.BigDecimal;
 
+/**
+ * The ShoppingCartItem describes one element of the shopping cart.
+ */
 public class ShoppingCartItem {
 
     private BigDecimal price;
+
     private BigDecimal quantity;
 
     private String productName;
@@ -27,17 +31,17 @@ public class ShoppingCartItem {
             return builder;
         }
 
-        public Builder withPrice(BigDecimal price) {
+        public Builder withPrice( BigDecimal price ) {
             instance.price = price;
             return this;
         }
 
-        public Builder withQuantity(BigDecimal quantity) {
+        public Builder withQuantity( BigDecimal quantity ) {
             instance.quantity = quantity;
             return this;
         }
 
-        public Builder withProductName(String productName) {
+        public Builder withProductName( String productName ) {
             instance.productName = productName;
             return this;
         }

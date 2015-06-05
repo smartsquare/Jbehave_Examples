@@ -1,13 +1,14 @@
 package bi.jug.jbehave.support;
 
-import static org.jbehave.core.io.CodeLocations.codeLocationFromClass;
-
 import java.util.Arrays;
 import java.util.List;
 import java.util.Properties;
 
+import org.jbehave.core.Embeddable;
 import org.jbehave.core.configuration.Configuration;
 import org.jbehave.core.configuration.MostUsefulConfiguration;
+import org.jbehave.core.io.CodeLocations;
+import org.jbehave.core.io.LoadFromClasspath;
 import org.jbehave.core.io.StoryFinder;
 import org.jbehave.core.junit.JUnitStories;
 import org.jbehave.core.reporters.Format;
@@ -17,6 +18,7 @@ import org.jbehave.core.steps.InstanceStepsFactory;
 import org.junit.runner.RunWith;
 
 import bi.jug.jbehave.steps.BeforeAndAfterSteps;
+import bi.jug.jbehave.steps.CustomerLoyaltyPointsSteps;
 import bi.jug.jbehave.steps.CustomerShoppingCartSteps;
 import bi.jug.jbehave.steps.RedeemPromotionCodeSteps;
 import de.codecentric.jbehave.junit.monitoring.JUnitReportingRunner;
@@ -28,20 +30,37 @@ public class JbehaveScenarios
     private Object[] context = {
         new BeforeAndAfterSteps(),
         new RedeemPromotionCodeSteps(),
-        new CustomerShoppingCartSteps()
+        new CustomerShoppingCartSteps(),
+        new CustomerLoyaltyPointsSteps()
     };
+
+    public JbehaveScenarios() {
+        configuredEmbedder().embedderControls()
+            .doGenerateViewAfterStories( true )
+            .doIgnoreFailureInStories( false )
+            .doIgnoreFailureInView( true )
+            .doFailOnStoryTimeout( false );
+
+        configuredEmbedder().useMetaFilters( Arrays.asList( "-skip" ) );
+    }
 
     @Override
     public Configuration configuration() {
         Properties viewResources = new Properties();
         viewResources.put( "decorateNonHtml", "true" );
 
+        if ( super.hasConfiguration() ) {
+            return super.configuration();
+        }
+
+        Class<? extends Embeddable> embeddableClass = this.getClass();
         return new MostUsefulConfiguration()
+            .useStoryLoader( new LoadFromClasspath( embeddableClass ) )
             .useStoryReporterBuilder(
-            new StoryReporterBuilder()
-                .withViewResources( viewResources )
-                .withFormats( Format.CONSOLE, Format.TXT, Format.HTML, Format.XML )
-                .withFailureTrace( true ).withFailureTraceCompression( true ) );
+                new StoryReporterBuilder()
+                    .withDefaultFormats()
+                    .withFormats( Format.CONSOLE, Format.TXT, Format.HTML, Format.XML )
+                    .withFailureTrace( true ).withFailureTraceCompression( true ) );
     }
 
     @Override
@@ -51,12 +70,11 @@ public class JbehaveScenarios
 
     @Override
     protected List<String> storyPaths() {
+        String codeLocation = CodeLocations.codeLocationFromClass( this.getClass() ).getFile();
 
-        List<String> includes = Arrays.asList( "**/*.story" );
-        List<String> excludes = null;
+        List<String> include = Arrays.asList( "**/*.story" );
+        List<String> exclude = null;
 
-        return new StoryFinder().findPaths( codeLocationFromClass( this.getClass() ).getFile(),
-            includes,
-            excludes );
+        return new StoryFinder().findPaths( codeLocation, include, exclude );
     }
 }
