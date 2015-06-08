@@ -5,11 +5,11 @@ As customer
 I want to add items to my shopping cart
 So that I can place an new order
 
-Scenario: Customer should add an item to shopping cart
+Scenario: Customer should add an item to his shopping cart
 
 Given a shopping cart
 When a customer adds an item to his shopping cart
-Then the shopping cart contains 1 different item
+Then the shopping cart contains 1 item
 
 Scenario: A customer should add different items to his shopping cart
 

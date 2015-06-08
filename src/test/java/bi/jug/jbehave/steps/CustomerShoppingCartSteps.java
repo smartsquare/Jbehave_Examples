@@ -49,7 +49,7 @@ public class CustomerShoppingCartSteps {
 
     }
 
-    @Then( "the shopping cart contains $quantity different item" )
+    @Then( "the shopping cart contains $quantity item" )
     @Alias( "the shopping cart contains $quantity different items" )
     public void verifyCartItems( @Named( "quantity" ) int quantity ) {
         List<ShoppingCartItem> items = cart.getItems();
