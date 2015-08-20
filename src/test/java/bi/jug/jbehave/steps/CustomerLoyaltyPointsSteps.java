@@ -65,7 +65,7 @@ public class CustomerLoyaltyPointsSteps {
         assertThat( actualDiscount, equalTo( expectedDiscount ) );
     }
 
-    @Then( "the customers loylaity balance is $expected_loyalty_balance" )
+    @Then( "the customers loyalty balance is $expected_loyalty_balance" )
     public void isNewBalance( @Named( "expected_loyalty_balance" ) Long expectedBalance ) {
         Customer customer = cart.getCustomer();
 

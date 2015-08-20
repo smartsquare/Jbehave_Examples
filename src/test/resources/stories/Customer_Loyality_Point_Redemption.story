@@ -12,7 +12,7 @@ And with <hair_color> hair
 And lives in <country>
 When the customer add an item to his shopping card
 Then is the shopping card total reduced by <cart_reduced_by>
-And the customers loylaity balance is <expected_loyalty_balance>
+And the customers loyalty balance is <expected_loyalty_balance>
 
 Examples:
 loyalty_balance  | hair_color | country | cart_reduced_by | expected_loyalty_balance | desc
